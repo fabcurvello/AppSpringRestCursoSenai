@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 import br.com.senai.entity.Estudante;
 import br.com.senai.entity.Professor;
 import br.com.senai.repository.EstudanteRepository;
+import br.com.senai.repository.ProfessorRepository;
 import br.com.senai.service.EstudanteService;
 import br.com.senai.service.ProfessorService;
 
@@ -22,14 +23,19 @@ public class Init implements ApplicationListener<ContextRefreshedEvent>{
 	private EstudanteService estudanteService;
 	
 	@Autowired
-	private EstudanteRepository repo;
+	private EstudanteRepository estudanteRepo;
 	
 	@Autowired
 	private ProfessorService professorService;
+	
+	@Autowired
+	private ProfessorRepository professorRepo;
+	
 
 	@Override
 	public void onApplicationEvent(ContextRefreshedEvent event) {
 		
+		// ----- ESTUDANTE -----
 		//Inserir
 		Estudante estudante1 = new Estudante();
 		estudante1.setNome("Fabricio");
@@ -52,13 +58,7 @@ public class Init implements ApplicationListener<ContextRefreshedEvent>{
 		estudante3.setDataNascimento(LocalDate.of(1978, 10, 10));
 		//estudanteService.salvar(estudante3);
 		
-		repo.saveAll(Arrays.asList(estudante1, estudante2, estudante3));
-		
-		Professor professor1 = new Professor();
-		professor1.setNome("Jefferson");
-		professor1.setSobrenome("Brandão");
-		professor1.setEspecializacao("TI");
-		professorService.salvar(professor1);
+		estudanteRepo.saveAll(Arrays.asList(estudante1, estudante2, estudante3));
 		
 		//buscar todos os estudantes
 		List<Estudante> listaEstudante = estudanteService.buscarTodosEstudantes();
@@ -70,8 +70,8 @@ public class Init implements ApplicationListener<ContextRefreshedEvent>{
 		System.out.println("Localizou? " + estudante.getNome());
 		
 		//excluir estudante pelo id
-		Boolean flag = estudanteService.removerEstudanteById(1);
-		System.out.println("Removeu ? " + flag);
+		Boolean flagEstud = estudanteService.removerEstudanteById(1);
+		System.out.println("Removeu ? " + flagEstud);
 		
 		
 		//alterar estudante
@@ -84,6 +84,53 @@ public class Init implements ApplicationListener<ContextRefreshedEvent>{
 		
 		Estudante estudanteAlterado = estudanteService.alterarEstudante(3, estudante4);
 		System.out.println("Nome do Estudante Alterado: " + estudanteAlterado.getNome());
+		
+		// ----- PROFESSOR -----
+		//Inserir
+		Professor professor1 = new Professor();
+		professor1.setNome("Carla");
+		professor1.setSobrenome("Regina");
+		professor1.setEspecializacao("Inglês");
+		//professorService.salvar(professor1);
+		
+		Professor professor2 = new Professor();
+		professor2.setNome("Valéria");
+		professor2.setSobrenome("Creuza");
+		professor2.setEspecializacao("Português");
+	
+		
+		Professor professor3 = new Professor();
+		professor3.setNome("Jolinalva");
+		professor3.setSobrenome("Cordeiro");
+		professor3.setEspecializacao("Matemática");
+
+		
+		professorRepo.saveAll(Arrays.asList(professor1, professor2, professor3));
+		
+		//buscar todos os professores
+		List<Professor> listaProfessor = professorService.buscarTodosprofessors();
+		listaProfessor.forEach(professor -> System.out.println(professor.getNome())); //lambda
+		
+		
+		//buscar um professor pelo id
+		Professor professor = professorService.buscarprofessorById(1);
+		System.out.println("Localizou? " + professor.getNome());
+		
+		//excluir professor pelo id
+		Boolean flagProf = professorService.removerprofessorById(1);
+		System.out.println("Removeu ? " + flagProf);
+		
+		
+		//alterar professor
+		Professor professor4 = new Professor();
+		professor4.setNome("Gerusa");
+		professor4.setSobrenome("Kubitsheck");
+		professor4.setEspecializacao("Biologia");
+		
+		
+		Professor professorAlterado = professorService.alterarprofessor(3, professor4);
+		System.out.println("Nome do Professor Alterado: " + professorAlterado.getNome());
+		
 	}
 	
 	

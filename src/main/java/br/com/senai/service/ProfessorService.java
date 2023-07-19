@@ -1,5 +1,7 @@
 package br.com.senai.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +16,37 @@ public class ProfessorService {
 	
 	public Professor salvar(Professor professor) {
 		return professorRepo.save(professor);
+	}
+	
+	public List<Professor> buscarTodosprofessors() {
+		return professorRepo.findAll();
+	}
+
+	public Professor buscarprofessorById(Integer id) {
+		return professorRepo.findById(id).orElse(null);
+	}
+
+	public Boolean removerprofessorById(Integer id) {
+		Professor professor = professorRepo.findById(id).orElse(null);
+		if (professorRepo != null) {
+			professorRepo.deleteById(id);
+			return true;
+		}
+		return false;
+	}
+
+	public Professor alterarprofessor(Integer id, Professor professor) {
+		Professor professorBD = professorRepo.findById(id).orElse(null);
+		if(professorBD!= null) {
+			professorBD.setNome(professor.getNome());
+			professorBD.setSobrenome(professor.getSobrenome());
+			professorBD.setEspecializacao(professor.getEspecializacao());
+			
+			return professorRepo.save(professorBD);
+		} else {
+			return null;
+		}
+
 	}
 
 }
