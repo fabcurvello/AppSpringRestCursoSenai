@@ -26,7 +26,5 @@ public class Estudante {
 	
 	private LocalDate dataNascimento;
 	
-	
-	
 
 }
