@@ -27,6 +27,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("estudantes") // o que vai vir depois da barra na URL
@@ -48,8 +49,9 @@ public class EstudanteResource {
 
 	@GetMapping("/{id}")
 	@Operation(description = "Retorna o registro de estudante pelo id")
-	public ResponseEntity<EstudanteDTO> buscarEstudanteById(@PathVariable("id") @Schema(example = ExampleValues.ID_ESTUDANTE)Integer id) {
-	
+	public ResponseEntity<EstudanteDTO> buscarEstudanteById(
+			@PathVariable("id") @Schema(example = ExampleValues.ID_ESTUDANTE) Integer id) {
+
 		Estudante estudante = estudanteService.buscarEstudanteById(id);
 		EstudanteDTO estudanteDTO = mapper.map(estudante, EstudanteDTO.class);
 		return ResponseEntity.ok().body(estudanteDTO);
@@ -57,10 +59,8 @@ public class EstudanteResource {
 
 	@PostMapping
 	public ResponseEntity<EstudanteDTO> cadastrarEstudante(
-			@io.swagger.v3.oas.annotations.parameters.RequestBody(
-					content = @Content
-					(examples = { @ExampleObject(name="Exemplo de Estudante", value = ExampleValues.EXEMPLO_ESTUDANTE)}))
-			@RequestBody EstudanteDTO estudanteDTO) {
+			@Valid @io.swagger.v3.oas.annotations.parameters.RequestBody(content = @Content(examples = {
+					@ExampleObject(name = "Exemplo de Estudante", value = ExampleValues.EXEMPLO_ESTUDANTE) })) @RequestBody EstudanteDTO estudanteDTO) {
 
 		Estudante estudante = mapper.map(estudanteDTO, Estudante.class);
 		estudante = estudanteService.salvar(estudante);
@@ -85,11 +85,12 @@ public class EstudanteResource {
 	}
 
 	@GetMapping("paginacao")
-	public Page<Estudante> buscarEstudantePorpaginacao(@RequestParam Integer pagina, @RequestParam Integer itensPorPagina, @RequestParam String ordenacao, @RequestParam String tipoOrdenacao) {
-	
-		PageRequest page = PageRequest.of(pagina, itensPorPagina, (tipoOrdenacao.equals("ASC")?Sort.by(ordenacao).ascending(): Sort.by(ordenacao).descending()));
+	public Page<Estudante> buscarEstudantePorpaginacao(@RequestParam Integer pagina,
+			@RequestParam Integer itensPorPagina, @RequestParam String ordenacao, @RequestParam String tipoOrdenacao) {
+
+		PageRequest page = PageRequest.of(pagina, itensPorPagina,
+				(tipoOrdenacao.equals("ASC") ? Sort.by(ordenacao).ascending() : Sort.by(ordenacao).descending()));
 		return estudanteService.buscarEstudantePorPaginacao(page);
 	}
-
 
 }

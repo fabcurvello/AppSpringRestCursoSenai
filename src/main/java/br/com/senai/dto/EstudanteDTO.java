@@ -1,5 +1,6 @@
 package br.com.senai.dto;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +12,7 @@ public class EstudanteDTO {
 	
 	@Getter
 	@Setter
+	@NotNull
 	private String nome;
 	
 	@Getter
@@ -18,6 +20,7 @@ public class EstudanteDTO {
 	private String sobrenome;
 	
 	//Supondo que email possua uma regra específica de negócios, fazemos o get e set necessário que atenda às regras
+	@NotNull
 	private String email;
 
 	public String getEmail() {
