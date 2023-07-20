@@ -24,6 +24,8 @@ import br.com.senai.dto.EstudanteDTO;
 import br.com.senai.entity.Estudante;
 import br.com.senai.service.EstudanteService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
@@ -54,7 +56,11 @@ public class EstudanteResource {
 	}
 
 	@PostMapping
-	public ResponseEntity<EstudanteDTO> cadastrarEstudante(@RequestBody EstudanteDTO estudanteDTO) {
+	public ResponseEntity<EstudanteDTO> cadastrarEstudante(
+			@io.swagger.v3.oas.annotations.parameters.RequestBody(
+					content = @Content
+					(examples = { @ExampleObject(name="Exemplo de Estudante", value = ExampleValues.exemploEstudante)}))
+			@RequestBody EstudanteDTO estudanteDTO) {
 
 		Estudante estudante = mapper.map(estudanteDTO, Estudante.class);
 		estudante = estudanteService.salvar(estudante);
