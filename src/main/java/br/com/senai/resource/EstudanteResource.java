@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.com.senai.commons.ExampleValues;
 import br.com.senai.dto.EstudanteDTO;
 import br.com.senai.entity.Estudante;
 import br.com.senai.service.EstudanteService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 @RestController
 @RequestMapping("estudantes") // o que vai vir depois da barra na URL
@@ -43,7 +45,9 @@ public class EstudanteResource {
 	}
 
 	@GetMapping("/{id}")
-	public ResponseEntity<EstudanteDTO> buscarEstudanteById(@PathVariable("id") Integer id) {
+	@Operation(description = "Retorna o registro de estudante pelo id")
+	public ResponseEntity<EstudanteDTO> buscarEstudanteById(@PathVariable("id") @Schema(example = ExampleValues.idEstudante)Integer id) {
+	
 		Estudante estudante = estudanteService.buscarEstudanteById(id);
 		EstudanteDTO estudanteDTO = mapper.map(estudante, EstudanteDTO.class);
 		return ResponseEntity.ok().body(estudanteDTO);
