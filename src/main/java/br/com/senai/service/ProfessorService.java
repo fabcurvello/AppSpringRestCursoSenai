@@ -3,8 +3,11 @@ package br.com.senai.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import br.com.senai.entity.Estudante;
 import br.com.senai.entity.Professor;
 import br.com.senai.repository.ProfessorRepository;
 
@@ -47,6 +50,10 @@ public class ProfessorService {
 			return null;
 		}
 
+	}
+	
+	public Page<Professor> buscarProfessorPorPaginacao(PageRequest page) {
+		return professorRepo.findAll(page);
 	}
 
 }
