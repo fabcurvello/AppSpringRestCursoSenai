@@ -48,7 +48,7 @@ public class EstudanteResource {
 
 	@GetMapping("/{id}")
 	@Operation(description = "Retorna o registro de estudante pelo id")
-	public ResponseEntity<EstudanteDTO> buscarEstudanteById(@PathVariable("id") @Schema(example = ExampleValues.idEstudante)Integer id) {
+	public ResponseEntity<EstudanteDTO> buscarEstudanteById(@PathVariable("id") @Schema(example = ExampleValues.ID_ESTUDANTE)Integer id) {
 	
 		Estudante estudante = estudanteService.buscarEstudanteById(id);
 		EstudanteDTO estudanteDTO = mapper.map(estudante, EstudanteDTO.class);
@@ -59,7 +59,7 @@ public class EstudanteResource {
 	public ResponseEntity<EstudanteDTO> cadastrarEstudante(
 			@io.swagger.v3.oas.annotations.parameters.RequestBody(
 					content = @Content
-					(examples = { @ExampleObject(name="Exemplo de Estudante", value = ExampleValues.exemploEstudante)}))
+					(examples = { @ExampleObject(name="Exemplo de Estudante", value = ExampleValues.EXEMPLO_ESTUDANTE)}))
 			@RequestBody EstudanteDTO estudanteDTO) {
 
 		Estudante estudante = mapper.map(estudanteDTO, Estudante.class);
